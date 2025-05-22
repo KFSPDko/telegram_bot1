@@ -12,7 +12,7 @@ import json
 # Ваш Telegram ID (куда будут отправляться анкеты)
 OWNER_ID = 6198995960# Замените на ваш Telegram ID
 # Токен бота
-TOKEN = "7701009361:AAHLh2PoJ04q12PTDjDR_Jz2BSSb3-6Pllc"  # Замените на токен вашего бота
+TOKEN = "8139612394:AAFfO7Q60L_gMhIHKQ8yVZZ3eRKiULoHz9Y"  # Замените на токен вашего бота
 
 # Пример анкеты
 ANKETA_EXAMPLE = """Анкета для вступления на наш Minecraft-сервер! 
