@@ -7,12 +7,11 @@ from telegram.ext import (
     ContextTypes,
     CallbackQueryHandler,
 )
-import json
 
 # Ваш Telegram ID (куда будут отправляться анкеты)
-OWNER_ID = 6198995960# Замените на ваш Telegram ID
+OWNER_ID = 6198995960  # Замените на ваш Telegram ID
 # Токен бота
-TOKEN = "8139612394:AAFfO7Q60L_gMhIHKQ8yVZZ3eRKiULoHz9Y"  # Замените на токен вашего бота
+TOKEN = "7621527273:AAF3WA3hvj9CYBxKkbtbyjhhVmPQVynOkPU"  # Замените на токен вашего бота
 
 # Пример анкеты
 ANKETA_EXAMPLE = """Анкета для вступления на наш Minecraft-сервер! 
@@ -70,12 +69,10 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     if query.data == "view":
-        await query.message.reply_text(ANKETA_EXAMPLE)
+        await query.edit_message_text(ANKETA_EXAMPLE)
     elif query.data == "submit":
         context.user_data["awaiting_anketa"] = True
-        await query.message.reply_text(
-            f"Вот пример анкеты:\n\n{ANKETA_EXAMPLE}\n\nПожалуйста, введите текст вашей анкеты:"
-        )
+        await query.edit_message_text("Пожалуйста, введите текст вашей анкеты:")
     elif query.data.startswith("accept_") or query.data.startswith("reject_"):
         # Обработка принятия/отклонения анкеты
         user_id = int(query.data.split("_")[1])
@@ -145,5 +142,5 @@ def main():
     print("Бот запущен...")
     app.run_polling()
 
-if __name__ == '__main__':
+if name == "main":
     main()
