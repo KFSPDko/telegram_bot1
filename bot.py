@@ -162,5 +162,5 @@ def main():
     web.run_app(web_app, host='0.0.0.0', port=int(os.getenv("PORT", 8443)), loop=app.loop)
     app.loop.run_until_complete(setup_webhook())
 
-if name == "main":
+if __name__ == "__main__":
     main()
