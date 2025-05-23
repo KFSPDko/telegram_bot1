@@ -8,15 +8,11 @@ from telegram.ext import (
     CallbackQueryHandler,
 )
 import json
-import os
-from aiohttp import web
 
 # Ваш Telegram ID (куда будут отправляться анкеты)
-OWNER_ID = 6198995960  # Замените на ваш Telegram ID
+OWNER_ID = 6198995960# Замените на ваш Telegram ID
 # Токен бота
-TOKEN = "7621527273:AAF3WA3hvj9CYBxKkbtbyjhhVmPQVynOkPU"  # Замените на токен вашего бота
-# URL для Webhook (заполняется автоматически на Render)
-WEBHOOK_URL = os.getenv("WEBHOOK_URL", "https://your-app-name.onrender.com/webhook")
+TOKEN = "8139612394:AAFfO7Q60L_gMhIHKQ8yVZZ3eRKiULoHz9Y"  # Замените на токен вашего бота
 
 # Пример анкеты
 ANKETA_EXAMPLE = """Анкета для вступления на наш Minecraft-сервер! 
@@ -77,7 +73,9 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.reply_text(ANKETA_EXAMPLE)
     elif query.data == "submit":
         context.user_data["awaiting_anketa"] = True
-        await query.message.reply_text("Введите свою анкету.")
+        await query.message.reply_text(
+            f"Вот пример анкеты:\n\n{ANKETA_EXAMPLE}\n\nПожалуйста, введите текст вашей анкеты:"
+        )
     elif query.data.startswith("accept_") or query.data.startswith("reject_"):
         # Обработка принятия/отклонения анкеты
         user_id = int(query.data.split("_")[1])
@@ -134,19 +132,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Пожалуйста, выберите действие через команду /start."
         )
 
-async def webhook(request):
-    """Обработка входящих обновлений от Telegram через Webhook"""
-    update = Update.de_json(await request.json(), app.bot)
-    await app.process_update(update)
-    return web.Response()
-
-async def setup_webhook():
-    """Настройка Webhook при запуске приложения"""
-    await app.bot.set_webhook(url=WEBHOOK_URL)
-
 def main():
     # Создаем приложение
-    global app
     app = Application.builder().token(TOKEN).build()
 
     # Регистрируем команды
@@ -154,13 +141,6 @@ def main():
     app.add_handler(CallbackQueryHandler(button_callback))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    # Настройка aiohttp сервера
-    web_app = web.Application()
-    web_app.router.add_post('/webhook', webhook)
-
-    # Запускаем приложение и Webhook
-    web.run_app(web_app, host='0.0.0.0', port=int(os.getenv("PORT", 8443)), loop=app.loop)
-    app.loop.run_until_complete(setup_webhook())
-
-if __name__ == "__main__":
-    main()
+    # Запускаем бота
+    print("Бот запущен...")
+    app.run_polling()
